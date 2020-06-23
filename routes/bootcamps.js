@@ -1,34 +1,40 @@
-app.get('/api/v1/bootcamps', (req, res) => {
+const express = require('express');
+// initialise router
+const router = express.Router();
+
+router.get('/', (req, res) => {
   res.status(200).json({
     success: true,
     msg: 'Show all bootcamps'
   })
 });
 
-app.get('/api/v1/bootcamps/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   res.status(200).json({
     success: true,
     msg: `Show bootcamp ${req.params.id}`
   })
 });
 
-app.post('/api/v1/bootcamps', (req, res) => {
+router.post('/', (req, res) => {
   res.status(200).json({
     success: true,
     msg: 'Create new bootcamp'
   })
 });
 
-app.put('/api/v1/bootcamps/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   res.status(200).json({
     success: true,
     msg: `Update bootcamp ${req.params.id}`
   })
 });
 
-app.delete('/api/v1/bootcamps/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
   res.status(200).json({
     success: true,
     msg: `Delete bootcamp ${req.params.id}`
   })
 });
+
+module.exports = router;
