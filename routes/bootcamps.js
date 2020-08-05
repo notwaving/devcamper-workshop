@@ -10,24 +10,23 @@ const {
 } = require('../controllers/bootcamps');
 
 const Bootcamp = require('../models/Bootcamp');
-const advancedResults = require('../middleware/advancedResults')
 
 // Include other resourse routers
 const courseRouter = require('./courses');
 // Initialise router
 const router = express.Router();
 
-const {
-  protect,
-  authorize
-} = require('../middleware/auth');
+const advancedResults = require('../middleware/advancedResults');
+const { protect, authorize } = require('../middleware/auth');
 
 // Re-route into other resourse routers
 router.use('/:bootcampId/courses', courseRouter);
 
 router.route('/radius/:zipcode/:distance').get(getBootcampsInRadius);
 
-router.route('/:id/photo').put(protect, authorize('publisher', 'admin'), bootcampPhotoUpload);
+router
+  .route('/:id/photo')
+  .put(protect, authorize('publisher', 'admin'), bootcampPhotoUpload);
 
 router
   .route('/')
