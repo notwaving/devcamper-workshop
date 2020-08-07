@@ -2,6 +2,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const Review = require('../models/Review');
 const Bootcamp = require('../models/Bootcamp');
+const { reverse } = require('../utils/geocoder');
 
 // @desc      Get reviews
 // @route     GET /api/v1/reviews
@@ -94,5 +95,30 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: review
+  });
+});
+
+// @desc      Delete review
+// @route     DELETE /api/v1/reviews/:id
+// @access    Private
+exports.deleteReview = asyncHandler(async (req, res, next) => {
+  const review = await Review.findById(req.params.id);
+
+  if (!review) {
+    return next(
+      new ErrorResponse(`No review with the ID of ${req.params.id}`, 404)
+    );
+  }
+
+  // Make sure review belongs to user or user is admin
+  if (review.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(new ErrorResponse(`Not authorised to delete review`, 401));
+  }
+
+  await review.remove();
+
+  res.status(200).json({
+    success: true,
+    data: {}
   });
 });
