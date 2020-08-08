@@ -3,7 +3,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const errorHandler = (err, req, res, next) => {
   let error = {
     ...err
-  }
+  };
 
   error.message = err.message;
 
@@ -12,7 +12,7 @@ const errorHandler = (err, req, res, next) => {
 
   //Mongoose bad ObjectID
   if (err.name === 'CastError') {
-    const message = `Resource not found with id of ${err.value}`;
+    const message = `Resource not found`;
     error = new ErrorResponse(message, 404);
   }
 
@@ -33,6 +33,6 @@ const errorHandler = (err, req, res, next) => {
     success: false,
     error: error.message || 'Server Error'
   });
-}
+};
 
 module.exports = errorHandler;
